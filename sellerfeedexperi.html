@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller's Feed</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .profile-picture {
+            height: 120px;
+            width: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .gig-card {
+            margin-bottom: 20px;
+        }
+        .toast {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Sidebar with Profile Details -->
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <img src="assets/images/placeholder.jpeg" alt="Profile Picture" class="profile-picture mb-3">
+                        <h5 class="card-title">Seller Name</h5>
+                        <p class="card-text">Bio about the seller...</p>
+                        <p class="card-text"><strong>Hours Available:</strong> Morning, Afternoon</p>
+                        <p class="card-text"><strong>Days Available:</strong> Monday, Wednesday, Friday</p>
+                        <p class="card-text"><strong>Price Range:</strong> NLe0 - NLe500</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seller's Feed -->
+            <div class="col-md-9">
+                <h2 class="text-center mb-4">Seller's Feed</h2>
+                
+                <!-- Active Gigs -->
+                <div class="mb-5">
+                    <h3>Active Gigs</h3>
+                    <?php
+                        // Fetch active gigs from the database
+                        // Replace with your database connection and query
+                        // Example: $activeGigs = $db->query("SELECT * FROM gigs WHERE seller_id = 1 AND status = 'active'");
+                        $activeGigs = [
+                            ['title' => 'Gig Title 1', 'description' => 'Gig description...', 'price' => 'NLe500', 'status' => 'Active'],
+                            // Add more gigs as needed
+                        ];
+
+                        foreach ($activeGigs as $gig) {
+                            echo '<div class="card gig-card">';
+                            echo '    <div class="card-body">';
+                            echo '        <h5 class="card-title">' . htmlspecialchars($gig['title']) . '</h5>';
+                            echo '        <p class="card-text">' . htmlspecialchars($gig['description']) . '</p>';
+                            echo '        <p class="card-text"><strong>Price:</strong> ' . htmlspecialchars($gig['price']) . '</p>';
+                            echo '        <p class="card-text"><strong>Status:</strong> ' . htmlspecialchars($gig['status']) . '</p>';
+                            echo '    </div>';
+                            echo '</div>';
+                        }
+                    ?>
+                </div>
+                
+                <!-- Completed Gigs -->
+                <div class="mb-5">
+                    <h3>Completed Gigs</h3>
+                    <?php
+                        // Fetch completed gigs from the database
+                        // Replace with your database connection and query
+                        // Example: $completedGigs = $db->query("SELECT * FROM gigs WHERE seller_id = 1 AND status = 'completed'");
+                        $completedGigs = [
+                            ['title' => 'Gig Title 2', 'description' => 'Gig description...', 'price' => 'NLe1000', 'status' => 'Completed'],
+                            // Add more gigs as needed
+                        ];
+
+                        foreach ($completedGigs as $gig) {
+                            echo '<div class="card gig-card">';
+                            echo '    <div class="card-body">';
+                            echo '        <h5 class="card-title">' . htmlspecialchars($gig['title']) . '</h5>';
+                            echo '        <p class="card-text">' . htmlspecialchars($gig['description']) . '</p>';
+                            echo '        <p class="card-text"><strong>Price:</strong> ' . htmlspecialchars($gig['price']) . '</p>';
+                            echo '        <p class="card-text"><strong>Status:</strong> ' . htmlspecialchars($gig['status']) . '</p>';
+                            echo '    </div>';
+                            echo '</div>';
+                        }
+                    ?>
+                </div>
+                
+                <!-- Transactions -->
+                <div class="mb-5">
+                    <h3>Transactions</h3>
+                    <?php
+                        // Fetch transactions from the database
+                        // Replace with your database connection and query
+                        // Example: $transactions = $db->query("SELECT * FROM transactions WHERE seller_id = 1");
+                        $transactions = [
+                            ['gig_title' => 'Gig Title 1', 'buyer' => 'Buyer Name', 'amount' => 'NLe500', 'transaction_id' => '123456', 'payment_method' => 'Orange Money'],
+                            // Add more transactions as needed
+                        ];
+
+                        foreach ($transactions as $transaction) {
+                            echo '<div class="card gig-card">';
+                            echo '    <div class="card-body">';
+                            echo '        <h5 class="card-title">Transaction for ' . htmlspecialchars($transaction['gig_title']) . '</h5>';
+                            echo '        <p class="card-text"><strong>Buyer:</strong> ' . htmlspecialchars($transaction['buyer']) . '</p>';
+                            echo '        <p class="card-text"><strong>Amount:</strong> ' . htmlspecialchars($transaction['amount']) . '</p>';
+                            echo '        <p class="card-text"><strong>Transaction ID:</strong> ' . htmlspecialchars($transaction['transaction_id']) . '</p>';
+                            echo '        <p class="card-text"><strong>Payment Method:</strong> ' . htmlspecialchars($transaction['payment_method']) . '</p>';
+                            echo '    </div>';
+                            echo '</div>';
+                        }
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast for Payment Success -->
+    <div class="toast" id="payment-toast" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);" data-delay="3000">
+        <div class="toast-header">
+            <strong class="mr-auto text-success">Payment Successful</strong>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+        </div>
+        <div class="toast-body">
+            <img src="assets/images/check-mark.png" alt="Success" style="height: 20px; width: 20px; margin-right: 10px;">
+            The payment was successful!
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#pay-seller-button').click(function () {
+                $('#payment-toast').toast('show');
+                setTimeout(function() {
+                    window.location.href = 'SellerFeed.html';
+                }, 3000);
+            });
+        });
+    </script>
+</body>
+</html>

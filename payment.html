@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page - Mammy Koker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    
+    <style>
+        .payment-option img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+        }
+        .payment-option {
+            cursor: pointer;
+            text-align: center;
+        }
+        .payment-option.selected {
+            border: 2px solid #007bff;
+            border-radius: 5px;
+        }
+        .payment-option img {
+            width: 50px;
+            margin-bottom: 5px;
+        }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            min-width: 250px;
+            z-index: 1050;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center my-5">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h3>Complete Your Payment</h3>
+                    </div>
+                    <div class="card-body">
+                        <!-- Gig Details -->
+                        <div class="gig-details mb-4">
+                            <h5 class="card-title">Gig Details</h5>
+                            <p><strong>Gig:</strong> <?php echo htmlspecialchars($gigTitle); ?></p>
+                            <p><strong>Seller:</strong> <?php echo htmlspecialchars($sellerName); ?></p>
+                            <p><strong>Price: </strong> NLe<?php echo htmlspecialchars($price); ?></p>
+                        </div>
+
+                        <!-- Payment Amount -->
+                        <div class="form-group">
+                            <label for="paymentAmount">Enter Payment Amount</label>
+                            <input type="number" class="form-control" id="paymentAmount" placeholder="Enter amount">
+                        </div>
+                        <p class="text-muted">Be aware that we'll deduct 10% of the total which would be NLe<span id="commission">0.00</span></p>
+
+                        <!-- Payment Options -->
+                        <div class="row">
+                            <div class="col-4 payment-option" data-method="Credit/Debit Card">
+                                <img src="assets/images/mastercard.png" alt="Credit/Debit Card">
+                                <p>Credit/Debit Card</p>
+                            </div>
+                            <div class="col-4 payment-option" data-method="PayPal">
+                                <img src="assets/images/paypal.png" alt="PayPal">
+                                <p>PayPal</p>
+                            </div>
+                            <div class="col-4 payment-option" data-method="Bank Transfer">
+                                <img src="assets/images/paypal.png" alt="Bank Transfer">
+                                <p>Bank Transfer</p>
+                            </div>
+                            <div class="col-4 payment-option" data-method="Orange Money">
+                                <img src="assets/images/orangemoney.png" alt="Orange Money">
+                                <p>Orange Money</p>
+                            </div>
+                            <div class="col-4 payment-option" data-method="AfriMoney">
+                                <img src="assets/images/afrimoney.jpeg" alt="AfriMoney">
+                                <p>AfriMoney</p>
+                            </div>
+                            <div class="col-4 payment-option" data-method="MoniMe">
+                                <img src="assets/images/monime.jpeg" alt="MoniMe">
+                                <p>MoniMe</p>
+                            </div>
+                        </div>
+
+                        <!-- Payment Method Details -->
+                        <div class="payment-details mt-4">
+                            <!-- Payment details forms here -->
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="button" id="payNowBtn" class="btn btn-primary btn-block mt-4">Pay Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="paymentToast">
+        <div class="toast-body">
+            Payment Successful!
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Handle payment option click
+            $('.payment-option').on('click', function() {
+                $('.payment-option').removeClass('selected');
+                $(this).addClass('selected');
+            });
+
+            // Calculate 10% commission
+            $('#paymentAmount').on('input', function() {
+                var amount = parseFloat($(this).val());
+                if (!isNaN(amount)) {
+                    var commission = (amount * 0.10).toFixed(2);
+                    $('#commission').text(commission);
+                } else {
+                    $('#commission').text('0.00');
+                }
+            });
+
+            // Handle payment submission
+            $('#payNowBtn').on('click', function() {
+                var selectedMethod = $('.payment-option.selected').data('method');
+                if (!selectedMethod) {
+                    alert('Please select a payment method.');
+                    return;
+                }
+
+                // Show success toast
+                $('#paymentToast').toast({ delay: 3000 });
+                $('#paymentToast').toast('show');
+            });
+        });
+    </script>
+</body>
+</html>

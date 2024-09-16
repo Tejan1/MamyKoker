@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Mammy Koker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            height: 100vh;
+            background-color: #343a40;
+            color: white;
+            padding: 1rem;
+        }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 1rem;
+        }
+        .transaction-details {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="d-flex">
+        <div class="sidebar">
+            <h2 class="text-center">Admin Dashboard</h2>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Dashboard Overview</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Gigs Management</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Transactions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">User Management</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Settings</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <h1>Dashboard Overview</h1>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Gigs Posted</h5>
+                            <p class="card-text" id="totalGigs">120</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Transactions</h5>
+                            <p class="card-text" id="totalTransactions">100</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Users</h5>
+                            <p class="card-text" id="totalUsers">110</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Pending Payouts</h5>
+                            <p class="card-text" id="pendingPayouts">10</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="mt-4">Transactions</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Transaction ID</th>
+                        <th scope="col">Buyer</th>
+                        <th scope="col">Seller</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="transactionTable">
+                    <!-- Transaction Rows Will Be Inserted Here -->
+                </tbody>
+            </table>
+
+            <div class="transaction-details" id="transactionDetails">
+                <h3>Transaction Details</h3>
+                <p><strong>Transaction ID:</strong> <span id="transId"></span></p>
+                <p><strong>Buyer:</strong> <span id="transBuyer"></span></p>
+                <p><strong>Seller:</strong> <span id="transSeller"></span></p>
+                <p><strong>Amount:</strong> <span id="transAmount"></span></p>
+                <p><strong>Status:</strong> <span id="transStatus"></span></p>
+                <button class="btn btn-success" onclick="paySeller()">Pay Seller</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample transactions data
+        const transactions = [
+            { id: 1, buyer: 'Gladys Cole', seller: 'Esther Visual arts', amount: 'Le475', status: 'Completed' },
+            { id: 2, buyer: 'Alice Johnson', seller: 'Tzy Web Designs', amount: 'Le1000', status: 'Completed' },
+            { id: 3, buyer: 'Tom Lee', seller: 'Sarah Connor', amount: 'Le750', status: 'Pending' }
+        ];
+
+        // Function to display transactions in the table
+        function displayTransactions() {
+            const transactionTable = document.getElementById('transactionTable');
+            transactions.forEach(transaction => {
+                const row = `
+                    <tr>
+                        <td>${transaction.id}</td>
+                        <td>${transaction.buyer}</td>
+                        <td>${transaction.seller}</td>
+                        <td>${transaction.amount}</td>
+                        <td>${transaction.status}</td>
+                        <td>
+                            <button class="btn btn-primary" onclick="viewTransaction(${transaction.id})">View</button>
+                        </td>
+                    </tr>
+                `;
+                transactionTable.insertAdjacentHTML('beforeend', row);
+            });
+        }
+
+        // Function to view transaction details
+        function viewTransaction(id) {
+            const transaction = transactions.find(trans => trans.id === id);
+            document.getElementById('transId').innerText = transaction.id;
+            document.getElementById('transBuyer').innerText = transaction.buyer;
+            document.getElementById('transSeller').innerText = transaction.seller;
+            document.getElementById('transAmount').innerText = transaction.amount;
+            document.getElementById('transStatus').innerText = transaction.status;
+            document.getElementById('transactionDetails').style.display = 'block';
+        }
+
+        // Function to pay seller
+        function paySeller() {
+            alert('Seller paid successfully!');
+            // Here you can add code to mark the transaction as completed and pay the seller
+        }
+
+        // Display transactions on page load
+        displayTransactions();
+    </script>
+</body>
+</html>
